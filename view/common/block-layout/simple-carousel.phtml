@@ -1,0 +1,201 @@
+<?php
+$this->headLink()->appendStylesheet('//unpkg.com/swiper/swiper-bundle.min.css');
+$this->headLink()->appendStylesheet($this->assetUrl('css/carousel.css?v=2', 'SimpleCarousel'));
+$this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
+?>
+
+<div style="position:relative;" class="<?php echo $blockContainerClass; ?>" id="simpleCarousel<?php echo $block_id; ?>">
+
+    <?php if(!empty($title)): ?>
+        <?php echo $title; ?>
+    <?php endif; ?>
+
+	<div class="swiper-container">
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <?php
+            foreach ($items as $item) { ?>
+                <div data-background="<?php echo $item->url; ?>" class="swiper-slide swiper-lazy">
+                    <div class="swiper-lazy-preloader"></div>
+                    <div class="slide-content">
+                        <div class="slide-text">
+                            <div class="slide-title"><?php echo $title; ?></div>
+                            <div class="slide-subtitle"><?php echo $item->title; ?></div>
+                        </div>
+                    </div>
+                </div><?php
+            } ?>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+	</div>
+
+    <?php $this->placeholder('pluginStyles')->captureStart(); ?>
+        #simpleCarousel<?php echo $block_id; ?> .swiper-container {
+            height: <?php echo $height ?>;
+            max-height: <?php echo $height ?>;
+        }
+
+        @media screen and (max-width: 479px) {
+            #simpleCarousel<?php echo $block_id; ?> .swiper-container {
+                height: <?php echo $mobile_height ?>;
+                max-height: <?php echo $mobile_height ?>;
+            }
+        }
+
+        .slide-title {
+            font-size: 1.2em;
+        }
+
+        <?php if(!empty($captionFontSizeDesktop)): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-text {
+                font-size: <?php echo $captionFontSizeDesktop; ?>
+            }
+        <?php endif; ?>
+
+        <?php if(!empty($captionFontSizeMobile)): ?>
+            @media screen and (max-width: 479px) {
+                #simpleCarousel<?php echo $block_id; ?> .slide-text {
+                    font-size: <?php echo $captionFontSizeMobile; ?>
+                }
+            }
+        <?php endif; ?>
+
+        <?php
+        $align_items_webkit = 'start';
+        $align_items = 'flex-start';
+
+        $align_content_webkit = 'start';
+        $align_content = 'flex-start';
+
+        switch($captionPosX) {
+            case 'left':
+            default:
+                break;
+            case 'middle':
+                $align_items_webkit = 'center';
+                $align_items = 'center';
+                break;
+            case 'right':
+                $align_items_webkit = 'end';
+                $align_items = 'flex-end';
+                break;
+        }
+
+        switch($captionPosY) {
+            case 'top':
+            default:
+                break;
+            case 'middle':
+                $align_content_webkit = 'center';
+                $align_content = 'center';
+                break;
+            case 'bottom':
+                $align_content_webkit = 'end';
+                $align_content = 'flex-end';
+                break;
+        }
+        ?>
+
+        #simpleCarousel<?php echo $block_id; ?> .slide-content {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: <?php echo $align_content_webkit; ?>;
+            -ms-flex-pack: <?php echo $align_content_webkit; ?>;
+            justify-content: <?php echo $align_content; ?>;
+            -webkit-box-align: <?php echo $align_items_webkit; ?>;
+            -ms-flex-align: <?php echo $align_items_webkit; ?>;
+            align-items: <?php echo $align_items; ?>;
+            padding-left: <?php echo $horizontalPadding; ?>;
+            padding-right: <?php echo $horizontalPadding; ?>;
+            padding-top: <?php echo $verticalPadding; ?>;
+            padding-bottom: <?php echo $verticalPadding; ?>;
+        }
+
+        <?php if(!empty($captionColor)): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-content {
+                color: <?php echo $captionColor; ?>
+            }
+        <?php endif; ?>
+
+        <?php if($captionPosX == 'middle'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-content {
+                text-align: center;
+            }
+        <?php elseif($captionPosX == 'right'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-content {
+                text-align: right;
+            }
+        <?php endif; ?>
+
+        <?php echo $customCss; ?>
+    <?php $this->placeholder('pluginStyles')->captureEnd() ?>
+
+    <?php $this->headStyle()->prependStyle($this->placeholder('pluginStyles')); ?>
+
+	<script>
+	$(document).ready(function() {
+        var mySwiper = new Swiper('#simpleCarousel<?php echo $block_id; ?> .swiper-container', {
+            // Optional parameters
+            loop: <?php echo $loop ?>,
+            <?php
+            if ($autoSlide == true) { ?>
+                autoplay: {
+                    delay: <?php echo $autoSlideInt; ?>,
+                    disableOnInteraction: false
+                },<?php
+            } ?>
+            preloadImages: false,
+            lazy: {
+                loadPrevNext: true,
+                loadPrevNextAmount: 1,
+                loadOnTransitionStart: true
+            },
+            speed: <?php echo $duration ?>,
+            slidesPerView: 1,
+            loopedSlides: 3,
+
+            breakpoints: {
+                // when window width is >= 480px
+                480: {
+                    slidesPerView: <?php echo ($perPage > 2)? 2 : 1 ?>,
+                    watchSlidesVisibility: <?php echo ($perPage > 2)? 'true' : 'false' ?>,
+                },
+                // when window width is >= 640px
+                640: {
+                    slidesPerView: <?php echo $perPage ?>,
+                    watchSlidesVisibility: true,
+                }
+            },
+
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+                dynamicBullets: true,
+            },
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+            <?php if($perPage == 1): ?>
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true
+            },
+            <?php endif; ?>
+        })
+	});
+	</script>
+</div>
