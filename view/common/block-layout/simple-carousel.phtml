@@ -4,7 +4,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/carousel.css?v=2', 'Sim
 $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
 ?>
 
-<div style="position:relative;" class="<?php echo $blockContainerClass; ?>" id="simpleCarousel<?php echo $block_id; ?>">
+<div style="position:relative;" class="<?php echo $blockContainerClass; ?> simple-carousel" id="simpleCarousel<?php echo $block_id; ?>">
 
     <?php if(!empty($title)): ?>
         <?php echo $title; ?>
@@ -19,8 +19,8 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
                     <div class="swiper-lazy-preloader"></div>
                     <div class="slide-content">
                         <div class="slide-text">
-                            <div class="slide-title"><?php echo $title; ?></div>
-                            <div class="slide-subtitle"><?php echo $item->title; ?></div>
+                            <div class="slide-title"><?php echo $item->title; ?></div>
+                            <div class="slide-subtitle"><?php echo $item->subtitle; ?></div>
                         </div>
                     </div>
                 </div><?php
@@ -35,6 +35,10 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
 	</div>
 
     <?php $this->placeholder('pluginStyles')->captureStart(); ?>
+        .simple-carousel {
+            margin-bottom: 15px;
+        }
+
         #simpleCarousel<?php echo $block_id; ?> .swiper-container {
             height: <?php echo $height ?>;
             max-height: <?php echo $height ?>;

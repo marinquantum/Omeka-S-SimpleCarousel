@@ -96,7 +96,8 @@ class Carousel extends AbstractBlockLayout
                         $mediaRenderer = $media->renderer();
                         if ((strpos($mediaType, 'image/') !== false) || (strpos($mediaRenderer, 'youtube') !== false)) {
                             $item = new \stdClass();
-                            $item->title = $attachment->caption();
+                            $item->title = $attachment->item()->title();
+                            $item->subtitle = $attachment->caption();
                             $item->url = $media->originalUrl();
                             array_push($items, $item);
                         }
