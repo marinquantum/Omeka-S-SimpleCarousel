@@ -60,19 +60,21 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             margin-bottom: 15px;
         }
 
-        .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
-            left: 20px;
-            color: #fff;
-        }
-
         .slide-text p {
             margin: 0;
             padding: 0;
         }
 
+        .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+            left: 20px;
+            color: #fff;
+            outline: none;
+        }
+
         .swiper-button-next, .swiper-container-rtl .swiper-button-prev {
             right: 20px;
             color: #fff;
+            outline: none;
         }
 
         #simpleCarousel<?php echo $block_id; ?> .swiper-container {
@@ -281,9 +283,9 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             @media screen and (max-width: 479px) {
                 #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
                     -webkit-box-orient: vertical;
-                    -webkit-box-direction: normal;
-                    -ms-flex-direction: column;
-                    flex-direction: column;
+                    -webkit-box-direction: reverse;
+                    -ms-flex-direction: column-reverse;
+                    flex-direction: column-reverse;
                 }
                 #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image {
                     max-width: 100%;
@@ -293,11 +295,11 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
                     position: absolute;
                     left: 0;
                     right: 0;
-                    top: 0;
+                    top: auto;
                     bottom: 0;
                     width: 100%;
                     height: 3%;
-                    background-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+                    background-image: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
                 }
             }
         <?php endif; ?>
