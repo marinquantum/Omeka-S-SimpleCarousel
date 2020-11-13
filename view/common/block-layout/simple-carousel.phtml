@@ -10,33 +10,64 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
         <?php echo $title; ?>
     <?php endif; ?>
 
-	<div class="swiper-container">
-        <div class="swiper-wrapper">
-            <!-- Slides -->
-            <?php
-            foreach ($items as $item) { ?>
-                <div data-background="<?php echo $item->url; ?>" class="swiper-slide swiper-lazy">
-                    <div class="swiper-lazy-preloader"></div>
-                    <div class="slide-content">
-                        <div class="slide-text">
-                            <div class="slide-title"><?php echo $item->title; ?></div>
-                            <div class="slide-subtitle"><?php echo $item->subtitle; ?></div>
+    <div class="outer-container">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <?php
+                foreach ($items as $item) { ?>
+                    <?php if($layout == 'caption_left' || $layout == 'caption_right'): ?>
+                        <div class="swiper-slide">
+                            <div class="swiper-lazy-preloader"></div>
+                            <div class="slide-flex-container">
+                                <div class="slide-content">
+                                    <div class="slide-text">
+                                        <div class="slide-title"><?php echo $item->title; ?></div>
+                                        <div class="slide-subtitle"><?php echo $item->subtitle; ?></div>
+                                    </div>
+                                </div>
+                                <div class="slide-image">
+                                    <div class="slide-image-bg swiper-lazy" data-background="<?php echo $item->url; ?>"></div>
+                                    <div class="gradient-bg"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div><?php
-            } ?>
+                    <?php else: ?>
+                        <div data-background="<?php echo $item->url; ?>" class="swiper-slide swiper-lazy">
+                            <div class="swiper-lazy-preloader"></div>
+                            <div class="slide-content">
+                                <div class="slide-text">
+                                    <div class="slide-title"><?php echo $item->title; ?></div>
+                                    <div class="slide-subtitle"><?php echo $item->subtitle; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php
+                } ?>
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
-        <!-- If we need pagination -->
-        <div class="swiper-pagination"></div>
+    </div>
 
-        <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-	</div>
-
-    <?php $this->placeholder('pluginStyles')->captureStart(); ?>
+    <?php $this->placeholder('pluginStyles'.$block_id)->captureStart(); ?>
         .simple-carousel {
             margin-bottom: 15px;
+        }
+
+        .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+            left: 20px;
+            color: #fff;
+        }
+
+        .swiper-button-next, .swiper-container-rtl .swiper-button-prev {
+            right: 20px;
+            color: #fff;
         }
 
         #simpleCarousel<?php echo $block_id; ?> .swiper-container {
@@ -44,9 +75,46 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             max-height: <?php echo $height ?>;
         }
 
+        <?php if($layout == 'caption_left' || $layout == 'caption_right'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .swiper-container {
+                height: auto;
+                max-height: none;
+            }
+            #simpleCarousel<?php echo $block_id; ?> .slide-image {
+                height: auto !important;
+                overflow: hidden;
+                position: relative;
+            }
+            #simpleCarousel<?php echo $block_id; ?> .slide-image:after {
+                height: 0;
+                overflow: hidden;
+                padding-top: 75%;
+                position: relative;
+                content: ' ';
+                width: 100%;
+                display: block;
+                z-index: -1;
+            }
+            #simpleCarousel<?php echo $block_id; ?> .slide-image-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                max-height: none;
+                background-size: cover;
+                background-position: center;
+                box-shadow: inset 0 0 100px black;
+            }
+            @media screen and (max-width: 479px) {
+                #simpleCarousel<?php echo $block_id; ?> .swiper-container {
+                    height: auto;
+                }
+            }
+        <?php endif; ?>
+
         @media screen and (max-width: 479px) {
             #simpleCarousel<?php echo $block_id; ?> .swiper-container {
-                height: <?php echo $mobile_height ?>;
                 max-height: <?php echo $mobile_height ?>;
             }
         }
@@ -105,10 +173,38 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
         }
         ?>
 
+        #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            flex-direction: row;
+            background-color: black;
+            height: 100%;
+        }
+        #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image, #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image img {
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+
+        #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image {
+            max-width: 55%;
+            font-size: 0;
+            line-height: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
         #simpleCarousel<?php echo $block_id; ?> .slide-content {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
+            flex: 1;
+        }
+
+        <?php if($layout == 'full'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-content {
             -webkit-box-orient: vertical;
             -webkit-box-direction: normal;
             -ms-flex-direction: column;
@@ -118,12 +214,82 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             justify-content: <?php echo $align_content; ?>;
             -webkit-box-align: <?php echo $align_items_webkit; ?>;
             -ms-flex-align: <?php echo $align_items_webkit; ?>;
-            align-items: <?php echo $align_items; ?>;
+            }
+        <?php endif; ?>
+
+        #simpleCarousel<?php echo $block_id; ?> .slide-text {
             padding-left: <?php echo $horizontalPadding; ?>;
             padding-right: <?php echo $horizontalPadding; ?>;
             padding-top: <?php echo $verticalPadding; ?>;
             padding-bottom: <?php echo $verticalPadding; ?>;
         }
+
+        <?php if($layout == 'caption_right'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
+                flex-direction: row-reverse;
+            }
+        <?php endif; ?>
+
+
+        <?php if($layout == 'caption_right'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .gradient-bg {
+                right: 0;
+                left: auto;
+                background-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
+            }
+        <?php elseif($layout == 'caption_left'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .gradient-bg {
+                left: 0;
+                right: auto;
+                background-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
+            }
+        <?php endif; ?>
+
+        <?php if($layout == 'caption_left' || $layout == 'caption_right'): ?>
+            #simpleCarousel<?php echo $block_id; ?> .slide-image {
+                position: relative;
+                /* Remove the parts of the circle that is outside of the image */
+                overflow:hidden;
+            }
+            #simpleCarousel<?php echo $block_id; ?> .gradient-bg {
+                position: absolute;
+                width: 2%;
+                top: 0;
+                bottom: 0;
+            }
+            #simpleCarousel<?php echo $block_id; ?> .slide-content {
+                align-self: <?php echo $align_content; ?>;
+            }
+            @media screen and (max-width: 479px) {
+                #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
+                    flex-direction: column;
+                }
+                #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image {
+                    max-width: 100%;
+                    max-height: 60%;
+                }
+                #simpleCarousel<?php echo $block_id; ?> .gradient-bg {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 3%;
+                    background-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+                }
+            }
+        <?php endif; ?>
+
+        <?php if($captionPosX == 'middle'): ?>
+        #simpleCarousel<?php echo $block_id; ?> .slide-content {
+            text-align: center;
+        }
+        <?php elseif($captionPosX == 'right'): ?>
+        #simpleCarousel<?php echo $block_id; ?> .slide-content {
+            text-align: right;
+        }
+        <?php endif; ?>
 
         <?php if(!empty($captionColor)): ?>
             #simpleCarousel<?php echo $block_id; ?> .slide-content {
@@ -131,26 +297,19 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             }
         <?php endif; ?>
 
-        <?php if($captionPosX == 'middle'): ?>
-            #simpleCarousel<?php echo $block_id; ?> .slide-content {
-                text-align: center;
-            }
-        <?php elseif($captionPosX == 'right'): ?>
-            #simpleCarousel<?php echo $block_id; ?> .slide-content {
-                text-align: right;
-            }
-        <?php endif; ?>
-
         <?php echo $customCss; ?>
-    <?php $this->placeholder('pluginStyles')->captureEnd() ?>
+    <?php $this->placeholder('pluginStyles'.$block_id)->captureEnd() ?>
 
-    <?php $this->headStyle()->prependStyle($this->placeholder('pluginStyles')); ?>
+    <?php $this->headStyle()->prependStyle($this->placeholder('pluginStyles'.$block_id)); ?>
 
 	<script>
 	$(document).ready(function() {
         var mySwiper = new Swiper('#simpleCarousel<?php echo $block_id; ?> .swiper-container', {
             // Optional parameters
             loop: <?php echo $loop ?>,
+            <?php if($layout == 'caption_left' || $layout == 'caption_right'): ?>
+            autoHeight: true,
+            <?php endif; ?>
             <?php
             if ($autoSlide == true) { ?>
                 autoplay: {

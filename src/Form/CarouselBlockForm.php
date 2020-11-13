@@ -72,6 +72,20 @@ class CarouselBlockForm extends Form
 			]
 		]);
 
+        $this->add([
+            'name' => 'o:block[__blockIndex__][o:data][layout]',
+            'type' => Element\Select::class,
+            'options' => [
+                'label' => 'Slide layout',
+                'value_options' => [
+                    'full' => 'Full width',
+                    'caption_left' => 'Caption left, image right',
+                    'caption_right' => 'Image left, caption right',
+                ],
+                'info' => 'Please choose between full width, caption left / image right and image left / caption right.'
+            ],
+        ]);
+
 		$this->add([
 			'name' => 'o:block[__blockIndex__][o:data][autoSlide]',
 			'type' => Element\Checkbox::class,

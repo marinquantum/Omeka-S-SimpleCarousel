@@ -25,6 +25,7 @@ return [
             'mobile_height' => '300px',
             'duration' => 500,
             'perPage' => 1,
+            'layout' => 'full',
             'loop' => true,
             'draggable' => true,
             'title' => '',
