@@ -65,6 +65,11 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             color: #fff;
         }
 
+        .slide-text p {
+            margin: 0;
+            padding: 0;
+        }
+
         .swiper-button-next, .swiper-container-rtl .swiper-button-prev {
             right: 20px;
             color: #fff;
@@ -123,6 +128,11 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             font-size: 1.2em;
         }
 
+        .slide-text > div {
+            margin-top: 0.5em;
+            line-height: 1.5em;
+        }
+
         <?php if(!empty($captionFontSizeDesktop)): ?>
             #simpleCarousel<?php echo $block_id; ?> .slide-text {
                 font-size: <?php echo $captionFontSizeDesktop; ?>
@@ -177,6 +187,9 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
             flex-direction: row;
             background-color: black;
             height: 100%;
@@ -200,20 +213,23 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
             flex: 1;
+            width: 100%;
         }
 
         <?php if($layout == 'full'): ?>
             #simpleCarousel<?php echo $block_id; ?> .slide-content {
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            -webkit-box-pack: <?php echo $align_content_webkit; ?>;
-            -ms-flex-pack: <?php echo $align_content_webkit; ?>;
-            justify-content: <?php echo $align_content; ?>;
-            -webkit-box-align: <?php echo $align_items_webkit; ?>;
-            -ms-flex-align: <?php echo $align_items_webkit; ?>;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-pack: <?php echo $align_content_webkit; ?>;
+                -ms-flex-pack: <?php echo $align_content_webkit; ?>;
+                justify-content: <?php echo $align_content; ?>;
+                -webkit-box-align: <?php echo $align_items_webkit; ?>;
+                -ms-flex-align: <?php echo $align_items_webkit; ?>;
             }
         <?php endif; ?>
 
@@ -226,6 +242,9 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
 
         <?php if($layout == 'caption_right'): ?>
             #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: reverse;
+                -ms-flex-direction: row-reverse;
                 flex-direction: row-reverse;
             }
         <?php endif; ?>
@@ -248,7 +267,6 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
         <?php if($layout == 'caption_left' || $layout == 'caption_right'): ?>
             #simpleCarousel<?php echo $block_id; ?> .slide-image {
                 position: relative;
-                /* Remove the parts of the circle that is outside of the image */
                 overflow:hidden;
             }
             #simpleCarousel<?php echo $block_id; ?> .gradient-bg {
@@ -262,6 +280,9 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             }
             @media screen and (max-width: 479px) {
                 #simpleCarousel<?php echo $block_id; ?> .slide-flex-container {
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
                     flex-direction: column;
                 }
                 #simpleCarousel<?php echo $block_id; ?> .slide-flex-container .slide-image {
