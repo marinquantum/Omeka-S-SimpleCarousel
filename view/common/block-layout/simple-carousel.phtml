@@ -72,16 +72,18 @@ $this->headScript()->appendFile('//unpkg.com/swiper/swiper-bundle.min.js');
             height: 100%;
             color: #fff;
             outline: none;
-            padding-left: 30px;
-            padding-right: 30px;
+        }
+
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 24px;
         }
 
         .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
-            left: 0px;
+            left: 4%;
         }
 
         .swiper-button-next, .swiper-container-rtl .swiper-button-prev {
-            right: 0px;
+            right: 4%;
         }
 
         #simpleCarousel<?php echo $block_id; ?> .swiper-container {
