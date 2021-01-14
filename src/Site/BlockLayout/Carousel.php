@@ -99,6 +99,9 @@ class Carousel extends AbstractBlockLayout
                             $item = new \stdClass();
                             $item->title = $attachment->item()->title();
                             $item->subtitle = $attachment->caption();
+
+                            //added a link to the show page as well
+                            $item->showLink = $attachment->item()->url();
                             $item->url = $media->originalUrl();
                             array_push($items, $item);
                         }
