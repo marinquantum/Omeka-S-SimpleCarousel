@@ -102,6 +102,7 @@ class Carousel extends AbstractBlockLayout
                             $item->url = $media->originalUrl();
                             array_push($items, $item);
                         }
+                        break;
                     }
                 }
             }
