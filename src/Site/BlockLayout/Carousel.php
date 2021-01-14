@@ -89,23 +89,22 @@ class Carousel extends AbstractBlockLayout
 
 		foreach ($attachments as $attachment)
 		{
+		    /* @var $attachment \Omeka\Api\Representation\SiteBlockAttachmentRepresentation */
 		    try {
-		        if($attachment->item() !== null) {
-                    foreach($attachment->item()->media() as $media)
-                    {
-                        $mediaType = $media->mediaType();
-                        $mediaRenderer = $media->renderer();
-                        if ((strpos($mediaType, 'image/') !== false) || (strpos($mediaRenderer, 'youtube') !== false)) {
-                            $item = new \stdClass();
-                            $item->title = $attachment->item()->title();
-                            $item->subtitle = $attachment->caption();
+		        $media = $attachment->media();
+                if($media !== null) {
 
-                            //added a link to the show page as well
-                            $item->showLink = $attachment->item()->url();
-                            $item->url = $media->originalUrl();
-                            array_push($items, $item);
-                        }
-                        break;
+                    $mediaType = $media->mediaType();
+                    $mediaRenderer = $media->renderer();
+                    if ((strpos($mediaType, 'image/') !== false) || (strpos($mediaRenderer, 'youtube') !== false)) {
+                        $item = new \stdClass();
+                        $item->title = $attachment->item()->title();
+                        $item->subtitle = $attachment->caption();
+
+                        //added a link to the show page as well
+                        $item->showLink = $attachment->item()->url();
+                        $item->url = $media->originalUrl();
+                        array_push($items, $item);
                     }
                 }
             }
