@@ -96,14 +96,23 @@ class Carousel extends AbstractBlockLayout
 
                     $mediaType = $media->mediaType();
                     $mediaRenderer = $media->renderer();
-                    if ((strpos($mediaType, 'image/') !== false) || (strpos($mediaRenderer, 'youtube') !== false)) {
+
+                    if ((strpos($mediaType, 'image/') !== false) || (strpos($mediaRenderer, 'youtube') !== false) || $media->extension() == '') {
                         $item = new \stdClass();
                         $item->title = $attachment->item()->title();
                         $item->subtitle = $attachment->caption();
 
                         //added a link to the show page as well
                         $item->showLink = $attachment->item()->url();
-                        $item->url = $media->originalUrl();
+                        if($mediaRenderer == 'file') {
+                            $item->url = $media->originalUrl();
+                        }
+                        else if($mediaRenderer == 'iiif'){
+                            $item->url = $media->thumbnailUrl('large');
+                        }
+                        else {
+                            continue;
+                        }
                         array_push($items, $item);
                     }
                 }
